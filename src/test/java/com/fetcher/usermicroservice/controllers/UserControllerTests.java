@@ -95,7 +95,7 @@ class UserControllerTests {
 	}
 	
 	@Test
-	void deleteUserNotAuthorizedError() {
+	void deleteUserUnauthorizedException() {
 		try {
 			userController.deleteUser(TEST_USER_NAME, WRONG_TEST_USER_NAME);
 		}catch (UnauthorizedException ex){
