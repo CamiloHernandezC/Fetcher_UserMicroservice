@@ -26,26 +26,30 @@ public class UserController {
 	
 	private final UserServiceInterface service;
 
-	@GetMapping("/users")
-	private List<UserDTO> all() {
+	@GetMapping("/users") 
+	List<UserDTO> all() {
 		return (service.all());
 	}
 	
 	@GetMapping("/users/{username}")  
-	private UserDTO getUser(@PathVariable("username") String username)   
+	UserDTO getUser(@PathVariable("username") String username)   
 	{  
 		return service.findUserByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
 		
 	}
 	
 	@DeleteMapping("/users/{username}")  
-	private void deleteUser(@PathVariable("username") String username)   
+	void deleteUser(@PathVariable("username") String username, @RequestHeader("username") String authenticatedUser)   
 	{  
-		service.deleteUserByUsername(username);  
+		if(authenticatedUser.equals(username)) {
+			service.deleteUserByUsername(username);
+			return;
+		}
+		throw new UnauthorizedException("because you are trying to delete a user that don't belongs to you");
 	}
 	
 	@PutMapping("/register")
-	private UserDTO newUser(@RequestBody UserDTO newUser) {
+	UserDTO newUser(@RequestBody UserDTO newUser) {
 		if(service.findUserByUsername(newUser.getUsername()).isPresent()) {
 			throw new UsernameTakenException(newUser.getUsername());
 		}
@@ -53,7 +57,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/users")
-	private UserDTO updateUser(@RequestBody UserDTO newUser, @RequestHeader("username") String authenticatedUser) {
+	UserDTO updateUser(@RequestBody UserDTO newUser, @RequestHeader("username") String authenticatedUser) {
 		if(authenticatedUser.equals(newUser.getUsername())) {
 			return service.update(newUser);
 		}

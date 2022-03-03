@@ -52,6 +52,7 @@ public class UserServiceImpl implements UserServiceInterface{
 			User user = optionalUser.get();
 			user.setPassword(newUser.getPassword());
 			user.setName(newUser.getName());
+			user.setAuthorPseudonym(newUser.getAuthorPseudonym());
 			return converter.toDTO(repository.save(user));
 		}
 		throw new UserNotFoundException(newUser.getUsername());
