@@ -3,6 +3,7 @@ package com.fetcher.usermicroservice.entities;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -22,6 +23,8 @@ public class User {
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String name;
+	@Column(nullable = true)
+	private String authorPseudonym;
 	private String username;
 	private String password;
 	@ManyToMany(fetch = FetchType.EAGER)

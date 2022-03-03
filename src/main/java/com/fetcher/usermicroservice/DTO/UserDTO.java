@@ -12,6 +12,7 @@ public class UserDTO {
 	
 	private Long id;
 	private String name;
+	private String authorPseudonym;
 	private String username;
 	private String password;
 	private Set<RoleDTO> roles = new HashSet<RoleDTO>();
